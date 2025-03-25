@@ -62,9 +62,18 @@ final class TokController extends AbstractController
     }
     #[Route('/modifier-tok/{id}', name: 'app_modifier_tok')]
 
-    public function modifiertok(Tok $tok): Response
+    public function modifiertok(Request $request,tok $tok,EntityManagerInterface $em): Response
     {
         $form = $this->createForm(ModifierTokType::class, $tok);
+        if($request->isMethod('POST')){
+            $form->handleRequest($request);
+            if ($form->isSubmitted()&&$form->isValid()){
+            $em->persist($tok);
+            $em->flush();
+            $this->addFlash('notice','Tok modifiée');
+            return $this->redirectToRoute('app_liste_tok');
+            }
+            }
         return $this->render('tok/modifier-tok.html.twig', [
             'form' => $form->createView(),
         ]);
