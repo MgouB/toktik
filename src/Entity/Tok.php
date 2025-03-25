@@ -23,6 +23,9 @@ class Tok
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateCreation = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $Likes = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +63,18 @@ class Tok
     public function setDateCreation(\DateTimeInterface $dateCreation): static
     {
         $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    public function getLikes(): ?int
+    {
+        return $this->Likes;
+    }
+
+    public function setLikes(?int $Likes): static
+    {
+        $this->Likes = $Likes;
 
         return $this;
     }

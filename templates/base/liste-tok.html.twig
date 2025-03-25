@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	{{parent()}}Liste des Tok
+{% endblock %}
+{% block body %}
+	<div class="container-fluid">
+		<h1 class="text-center text-primary mt-4 pt-4 display-1 fw-bold">
+			Liste des Tok</h1>
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-8 bg-white p-4 m-0 text-primary">
+				<div class="table-responsive">
+                {{ form_start(form) }}
+					<table class="table table-hover">
+						<thead>
+							<tr class="fw-bold text-primary">
+								<th scope="col">Contenu</th>
+								<th scope="col">Auteur</th>
+								<th scope="col">Date création</th>
+								<th scope="col">likes</th>
+								<th scope="col"></th>
+								<th scope="col"></th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for tok in toks |sort((a, b) =>
+b.dateCreation <=> a.dateCreation)%}
+								<tr class="{{ cycle(['table-primary', 'table-secondary'], loop.index0) }}">
+									<td>{{ tok.Contenu}}</td>
+									<td>{{ tok.auteur}}</td>
+									<td>{{ tok.dateCreation |
+date("d-m-Y à H:i:s")}}</td>
+									<td>{{ tok.likes }}</td>
+									<td>
+										<a href="{{path("app_modifier_tok",{'id':tok.id})}}">
+											<i class="bi bi-pen-fill
+																																				text-dark"></i>
+										</a>
+									</td>
+									<td>
+										<a href="{{path("app_supprimer_tok",{'id':tok.id})}}">
+											<i class="bi bi-trash-fill text-dark"></i>
+										</a>
+									</td>
+									<td>{{ form_widget(form.toks[tok.id]) }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					{{ form_widget(form.supprimer) }}
+					{{ form_end(form) }}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
